@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { motion, useReducedMotion } from "motion/react";
+import React, { useEffect, useState } from "react";
 
 interface AnimatedContainerProps {
   children: React.ReactNode;
@@ -11,24 +10,25 @@ interface AnimatedContainerProps {
 
 export function AnimatedContainer({
   children,
-  className,
+  className = "",
   delay = 0,
 }: AnimatedContainerProps) {
-  const shouldReduceMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
 
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.35, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className={className}
+    <div
+      className={`transition-all duration-500 ease-out ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-95 translate-y-0"
+      } ${className}`}
+      style={{
+        transitionDelay: `${delay * 1000}ms`,
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
