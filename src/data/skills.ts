@@ -1,74 +1,48 @@
-import { SkillCategoryGroup } from "@/types";
+export interface SimpleSkillGroup {
+  category: string;
+  skills: { name: string; note?: string }[];
+}
 
-export const skillCategoriesData: SkillCategoryGroup[] = [
+export const skillsData: SimpleSkillGroup[] = [
   {
-    id: "project-operations",
-    name: "Project Coordination & Operations",
-    current: [
-      "Project Coordination",
-      "Timeline & Schedule Tracking",
-      "Stakeholder Communication",
-      "Documentation & Reporting",
-      "Cross-Functional Alignment",
-      "Task Management",
-      "Account Management",
-      "Customer Service & Advisory",
-      "E-Commerce Operations",
-      "SLA Management",
+    category: "Data & Analytics",
+    skills: [
+      { name: "SQL", note: "Data queries & aggregation" },
+      { name: "Python", note: "Data analysis & scripting" },
+      { name: "Pandas", note: "Data manipulation" },
+      { name: "NumPy", note: "Numerical operations" },
+      { name: "Microsoft Excel", note: "Formulas, modeling & pivots" },
+      { name: "Power BI", note: "Dashboards & reporting" },
     ],
-    learning: ["Agile & Scrum Methodologies", "Jira / Asana Advanced Workflows"],
   },
   {
-    id: "data-analytics",
-    name: "Data & Business Analytics",
-    current: [
-      "Microsoft Excel (Advanced)",
-      "SQL",
-      "Python",
-      "Pandas",
-      "NumPy",
-      "Data Cleaning",
-      "Exploratory Data Analysis",
-      "Power BI",
-      "Data Visualization",
-      "KPI & Operational Dashboards",
+    category: "Web & Frontend",
+    skills: [
+      { name: "JavaScript", note: "Interactive web applications" },
+      { name: "HTML5", note: "Semantic structure" },
+      { name: "CSS3", note: "Responsive styling & layouts" },
+      { name: "REST APIs", note: "Data fetching & integration" },
+      { name: "Git & GitHub", note: "Version control" },
     ],
-    learning: ["Tableau", "Statistical Modeling", "Automated ETL Pipelines"],
   },
   {
-    id: "programming-software",
-    name: "Programming & Web Development",
-    current: [
-      "JavaScript",
-      "HTML5",
-      "CSS3",
-      "Responsive Web Design",
-      "DOM Manipulation",
-      "REST APIs",
-      "Git & GitHub",
-      "Python",
+    category: "Operations & Coordination",
+    skills: [
+      { name: "Project Coordination", note: "Tracking milestones & tasks" },
+      { name: "Account Management", note: "Client communication & delivery" },
+      { name: "Customer Operations", note: "Escalations & support" },
+      { name: "Process Documentation", note: "Clear SOPs & reports" },
+      { name: "SLA Management", note: "Timeliness & quality" },
     ],
-    learning: ["TypeScript", "React", "Next.js"],
   },
   {
-    id: "databases",
-    name: "Databases & Systems",
-    current: ["SQL", "Relational Database Concepts", "MySQL", "PostgreSQL Basics"],
-    learning: ["Data Warehousing", "MongoDB"],
-  },
-  {
-    id: "professional",
-    name: "Core Professional Competencies",
-    current: [
-      "Problem Solving",
-      "Analytical Rigor",
-      "Active Listening & Empathy",
-      "Team Collaboration",
-      "Attention to Detail",
-      "Adaptability",
-      "Continuous Learning",
-      "Ownership & Execution",
+    category: "Exploring & Expanding",
+    skills: [
+      { name: "Statistics", note: "Exploratory & inferential analysis" },
+      { name: "Tableau", note: "Visual analytics" },
+      { name: "Machine Learning Basics", note: "Classification & regression" },
+      { name: "TypeScript", note: "Typed frontend development" },
+      { name: "React & Next.js", note: "Modern web architecture" },
     ],
-    learning: ["Technical Leadership", "Technology Consulting Frameworks"],
   },
 ];

@@ -1,84 +1,63 @@
 import React from "react";
-import { Section } from "@/components/layout/Section";
-import { SectionHeading } from "@/components/layout/SectionHeading";
-import { learningRoadmapData } from "@/data/learning";
-import { Badge } from "@/components/ui/badge";
-import { AnimatedContainer } from "@/components/motion/AnimatedContainer";
-import { ArrowRight, Compass, Sparkles } from "lucide-react";
+import { Container } from "@/components/layout/Container";
+import { learningStepsData } from "@/data/learning";
 
 export function Learning() {
   return (
-    <Section id="learning" className="border-t border-border/60">
-      <AnimatedContainer>
-        <SectionHeading
-          eyebrow="Continuous Learning"
-          title="Technical Horizon & Learning Tracks"
-          description="A structured learning progression expanding from active data analytics and operations into advanced machine learning and technology consulting."
-        />
-      </AnimatedContainer>
+    <section id="learning" className="py-20 sm:py-28 border-t border-border">
+      <Container>
+        {/* Section Header */}
+        <div className="mb-16 sm:mb-20">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+            05 &bull; Trajectory
+          </p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+            Right now
+          </h2>
+          <p className="text-sm sm:text-base text-muted-foreground mt-3 max-w-xl">
+            Where my learning and technical exploration are currently focused.
+          </p>
+        </div>
 
-      <div className="space-y-6">
-        {learningRoadmapData.map((track, idx) => (
-          <AnimatedContainer key={track.id} delay={0.08 * idx}>
+        {/* Clean 3-Step Progression Rows */}
+        <div className="space-y-6 sm:space-y-8">
+          {learningStepsData.map((step) => (
             <div
-              className={`rounded-2xl border p-5 sm:p-7 transition-all duration-300 relative overflow-hidden ${
-                track.isCurrent
-                  ? "border-primary/50 bg-card shadow-lg shadow-primary/5 ring-1 ring-primary/25"
-                  : "border-border/80 bg-card/60 hover:border-primary/40 hover:bg-card/80"
+              key={step.number}
+              className={`rounded-xl border p-6 sm:p-7 transition-all duration-200 ${
+                step.status === "Active Focus"
+                  ? "border-foreground/40 bg-card shadow-xs"
+                  : "border-border bg-card/40"
               }`}
             >
-              {track.isCurrent && (
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-indigo-500 to-sky-400" />
-              )}
-
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-                <div className="flex items-center gap-2.5">
-                  <div
-                    className={`flex h-8 w-8 items-center justify-center rounded-lg ${
-                      track.isCurrent
-                        ? "bg-primary text-primary-foreground shadow-xs shadow-primary/30"
-                        : "bg-secondary text-muted-foreground"
-                    }`}
-                  >
-                    <Compass className="h-4 w-4" />
-                  </div>
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-mono font-bold text-muted-foreground">
+                    {step.number}
+                  </span>
                   <h3 className="text-base sm:text-lg font-bold text-foreground">
-                    {track.track}
+                    {step.title}
                   </h3>
                 </div>
 
-                {track.isCurrent && (
-                  <Badge variant="default" className="text-xs px-3 py-1 font-semibold animate-pulse">
-                    Active Learning Focus
-                  </Badge>
-                )}
+                <span
+                  className={`text-[10px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full self-start sm:self-auto ${
+                    step.status === "Active Focus"
+                      ? "bg-primary/10 text-primary border border-primary/20"
+                      : "bg-secondary text-muted-foreground"
+                  }`}
+                >
+                  {step.status}
+                </span>
               </div>
 
-              {/* Connected Track Steps */}
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                {track.steps.map((step, sIdx) => (
-                  <React.Fragment key={step}>
-                    <div
-                      className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all duration-200 ${
-                        track.isCurrent
-                          ? "bg-primary/10 text-primary border border-primary/25 shadow-2xs hover:bg-primary/15"
-                          : "bg-secondary/70 text-secondary-foreground border border-border/60 hover:border-primary/30"
-                      }`}
-                    >
-                      <span className="h-2 w-2 rounded-full bg-current opacity-80" />
-                      <span>{step}</span>
-                    </div>
-
-                    {sIdx < track.steps.length - 1 && (
-                      <ArrowRight className="h-4 w-4 text-primary/40 shrink-0 hidden sm:inline-block" />
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed pl-7">
+                {step.focus}
+              </p>
             </div>
-          </AnimatedContainer>
-        ))}
-      </div>
-    </Section>
+          ))}
+        </div>
+      </Container>
+    </section>
   );
 }

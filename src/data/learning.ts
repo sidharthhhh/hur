@@ -1,25 +1,27 @@
-import { LearningTrack } from "@/types";
+export interface SimpleLearningStep {
+  number: string;
+  title: string;
+  focus: string;
+  status: "Active Focus" | "Next" | "Exploring";
+}
 
-export const learningRoadmapData: LearningTrack[] = [
+export const learningStepsData: SimpleLearningStep[] = [
   {
-    id: "track-1",
-    track: "Now — Data Analytics & Business Intelligence",
-    steps: ["SQL & Data Modeling", "Python (Pandas / NumPy)", "Descriptive & Inferential Statistics", "Power BI Dashboards"],
-    isCurrent: true,
+    number: "01",
+    title: "Data Analytics & Reporting",
+    focus: "SQL queries, Python data analysis (Pandas/NumPy), Excel modeling, and Power BI operational reporting.",
+    status: "Active Focus",
   },
   {
-    id: "track-2",
-    track: "Next — Machine Learning & Data Science",
-    steps: ["Feature Engineering", "Supervised Learning", "Model Evaluation & Tuning", "scikit-learn & Python ML"],
+    number: "02",
+    title: "Deeper Technical Foundations",
+    focus: "Applied statistics, relational database design, data cleaning workflows, and REST APIs.",
+    status: "Next",
   },
   {
-    id: "track-3",
-    track: "Technology & Systems",
-    steps: ["REST APIs & Web Architectures", "Relational & NoSQL Databases", "Docker & Container Basics", "Cloud Systems"],
-  },
-  {
-    id: "track-4",
-    track: "Long Term — Technology Leadership & Solutions",
-    steps: ["Production Engineering Principles", "Technology Consulting Frameworks", "Full-Lifecycle Solution Architecture"],
+    number: "03",
+    title: "Exploring Next",
+    focus: "Machine learning fundamentals, systems architecture, and modern full-stack web applications.",
+    status: "Exploring",
   },
 ];
