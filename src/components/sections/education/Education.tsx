@@ -1,81 +1,62 @@
 "use client";
 
 import React from "react";
-import { Section } from "@/components/layout/Section";
-import { SectionHeading } from "@/components/layout/SectionHeading";
+import { Container } from "@/components/layout/Container";
 import { educationData } from "@/data/education";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { MotionReveal } from "@/components/motion/MotionWrapper";
-import { motion } from "motion/react";
 import { GraduationCap, BookOpen, Calendar } from "lucide-react";
 
 export function Education() {
+  const edu = educationData[0];
+
   return (
-    <Section id="education" className="border-t border-border/60">
-      <MotionReveal>
-        <SectionHeading
-          eyebrow="Academic Foundation"
-          title="Engineering Education"
-          description="Rigorous academic training cultivating computational thinking, quantitative analysis, and disciplined problem solving."
-        />
-      </MotionReveal>
+    <section id="education" className="relative py-14 sm:py-20 border-t border-border/80 scroll-mt-20">
+      <Container size="narrow">
+        <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-card text-card-foreground p-6 sm:p-8 shadow-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-black/8 dark:border-white/8">
+            <div className="flex items-start gap-3.5">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary border border-primary/20 shrink-0 mt-0.5">
+                <GraduationCap className="h-5 w-5" />
+              </div>
+              <div>
+                <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-primary font-semibold">
+                  ACADEMIC FOUNDATION
+                </span>
+                <h3 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight mt-0.5">
+                  {edu.degree}
+                </h3>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1 font-medium">
+                  {edu.branch} &bull; {edu.institution}
+                </p>
+              </div>
+            </div>
 
-      <div className="space-y-6 max-w-4xl">
-        {educationData.map((item, idx) => (
-          <MotionReveal key={item.id} delay={0.08 * idx} direction="up">
-            <motion.div
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Card className="hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 bg-card/90">
-                <CardHeader className="pb-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <div className="flex items-start gap-3">
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0 mt-0.5 shadow-2xs">
-                        <GraduationCap className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg sm:text-xl font-bold">
-                          {item.degree}
-                        </CardTitle>
-                        <p className="text-sm font-semibold text-foreground/90 mt-0.5">
-                          {item.branch} &bull; {item.institution}
-                        </p>
-                      </div>
-                    </div>
+            <div className="inline-flex items-center gap-1.5 self-start sm:self-auto font-mono text-xs text-muted-foreground bg-surface-elevated px-3 py-1.5 rounded-full border border-black/6 dark:border-white/6">
+              <Calendar className="h-3.5 w-3.5 text-primary" />
+              <span>{edu.graduation_year}</span>
+            </div>
+          </div>
 
-                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono bg-secondary/80 border border-border px-3 py-1 rounded-md self-start sm:self-auto">
-                      <Calendar className="h-3.5 w-3.5 text-primary" />
-                      <span>{item.graduation_year}</span>
-                    </div>
-                  </div>
-                </CardHeader>
-
-                {item.coursework && item.coursework.length > 0 && (
-                  <CardContent className="pt-2 border-t border-border/60">
-                    <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2.5">
-                      <BookOpen className="h-3.5 w-3.5 text-primary" />
-                      <span>Relevant Coursework & Fundamentals</span>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {item.coursework.map((course) => (
-                        <Badge
-                          key={course}
-                          variant="secondary"
-                          className="text-xs font-normal text-muted-foreground"
-                        >
-                          {course}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                )}
-              </Card>
-            </motion.div>
-          </MotionReveal>
-        ))}
-      </div>
-    </Section>
+          {/* Coursework & Quantitative Training */}
+          {edu.coursework && edu.coursework.length > 0 && (
+            <div className="pt-6 space-y-3">
+              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                <BookOpen className="h-3.5 w-3.5 text-primary" />
+                <span>Quantitative & Technical Coursework</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {edu.coursework.map((course) => (
+                  <span
+                    key={course}
+                    className="text-xs font-mono px-3 py-1 rounded-full bg-surface-elevated border border-black/6 dark:border-white/6 text-muted-foreground"
+                  >
+                    {course}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </Container>
+    </section>
   );
 }

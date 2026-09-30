@@ -19,7 +19,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn("relative py-16 sm:py-24 lg:py-28 scroll-mt-16", className)}
+      className={cn("relative py-14 sm:py-20 lg:py-24 scroll-mt-24", className)}
       {...props}
     >
       {noContainer ? (

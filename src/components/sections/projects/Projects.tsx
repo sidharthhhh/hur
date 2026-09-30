@@ -1,24 +1,23 @@
+"use client";
+
 import React from "react";
-import { Section } from "@/components/layout/Section";
+import { Container } from "@/components/layout/Container";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { projectsData } from "@/data/projects";
 import { ProjectList } from "./ProjectList";
-import { AnimatedContainer } from "@/components/motion/AnimatedContainer";
 
 export function Projects() {
   return (
-    <Section id="projects" className="border-t border-border/60">
-      <AnimatedContainer>
+    <section id="projects" className="relative py-16 sm:py-24 border-t border-border/80 scroll-mt-20">
+      <Container>
         <SectionHeading
-          eyebrow="Portfolio & Explorations"
-          title="Applied Analytics & Systems Projects"
-          description="Real-world data modeling, business operations dashboards, and exploratory data science architectures."
+          eyebrow="03 &mdash; SELECTED WORK"
+          title="Applied Analytics & Systems"
+          description="Production data modeling, operational intelligence dashboards, and interactive web applications built around real business challenges."
         />
-      </AnimatedContainer>
 
-      <AnimatedContainer delay={0.1}>
         <ProjectList projects={projectsData} />
-      </AnimatedContainer>
-    </Section>
+      </Container>
+    </section>
   );
 }

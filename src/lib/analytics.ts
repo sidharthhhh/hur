@@ -2,7 +2,8 @@ type AnalyticsEvent =
   | "resume_download"
   | "project_click"
   | "contact_submit"
-  | "external_profile_click";
+  | "external_profile_click"
+  | "hero_cta_click";
 
 export function track(event: AnalyticsEvent, props?: Record<string, string | number | boolean>) {
   if (typeof window === "undefined") return;
@@ -20,7 +21,6 @@ export function track(event: AnalyticsEvent, props?: Record<string, string | num
   } else {
     // In development or when no analytics provider is connected
     if (process.env.NODE_ENV === "development") {
-      // eslint-disable-next-line no-console
       console.log(`[Analytics: ${event}]`, props);
     }
   }

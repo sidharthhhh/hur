@@ -4,10 +4,6 @@ import React, { useEffect, useState, useRef } from "react";
 import {
   motion,
   useInView,
-  useScroll,
-  useTransform,
-  useSpring,
-  AnimatePresence,
 } from "motion/react";
 
 interface MotionBoxProps {

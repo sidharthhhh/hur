@@ -1,6 +1,6 @@
 "use server";
 
-import { contactFormSchema, ContactFormData } from "@/lib/validations";
+import { contactFormSchema } from "@/lib/validations";
 
 export interface ContactActionResult {
   success: boolean;
@@ -62,7 +62,6 @@ export async function submitContactForm(
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        // eslint-disable-next-line no-console
         console.error("Resend API error:", errorData);
         return {
           success: false,
@@ -72,7 +71,6 @@ export async function submitContactForm(
       }
     } else {
       // In development or when no email service is configured
-      // eslint-disable-next-line no-console
       console.log("[Contact Form Submitted in Development Mode]:", {
         name,
         email,
@@ -86,7 +84,6 @@ export async function submitContactForm(
       message: "Thank you! Your message has been sent successfully. I will get back to you shortly.",
     };
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("Error submitting contact form:", error);
     return {
       success: false,

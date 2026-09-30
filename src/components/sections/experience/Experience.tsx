@@ -1,250 +1,210 @@
 "use client";
 
-import React from "react";
-import { Section } from "@/components/layout/Section";
+import React, { useEffect, useRef } from "react";
+import { Container } from "@/components/layout/Container";
 import { SectionHeading } from "@/components/layout/SectionHeading";
-import { careerMilestones, experienceData } from "@/data/experience";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  MotionReveal,
-  MotionStagger,
-  MotionStaggerItem,
-} from "@/components/motion/MotionWrapper";
-import { motion } from "motion/react";
-import { Calendar, MapPin, Briefcase, ChevronRight, Sparkles, Building2 } from "lucide-react";
+import { experienceData } from "@/data/experience";
+import { Building2, MapPin, CheckCircle2 } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Academic foundation milestone to complete the narrative
+const allTimelineItems = [
+  ...experienceData,
+  {
+    id: "exp-edu",
+    role: "Engineering Education (B.Tech)",
+    company: "Oriental Institute of Science and Technology",
+    location: "Indore, Madhya Pradesh, India",
+    start: "2020",
+    end: "2024",
+    responsibilities: [
+      "Rigorous coursework in computational systems, software engineering, databases, and algorithms.",
+      "Applied quantitative mathematics, data structures, and systematic engineering methodologies.",
+    ],
+    achievements: [
+      "Graduated with comprehensive technical problem solving and quantitative foundations.",
+    ],
+    skills: ["Engineering Fundamentals", "DBMS", "Data Structures", "Algorithms", "Mathematics"],
+  },
+];
 
 export function Experience() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      const items = gsap.utils.toArray<HTMLElement>(".timeline-entry");
+      items.forEach((item) => {
+        // Smooth entrance for each timeline entry
+        gsap.from(item, {
+          opacity: 0,
+          y: 24,
+          duration: 0.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        });
+
+        // Scrubbed line fill animation connecting each node
+        const lineFill = item.querySelector(".timeline-line-fill");
+        if (lineFill) {
+          gsap.to(lineFill, {
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 70%",
+              end: "bottom 70%",
+              scrub: 0.4,
+            },
+          });
+        }
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <Section id="experience" className="border-t border-border/60">
-      <MotionReveal>
+    <section id="experience" ref={containerRef} className="relative py-16 sm:py-24 border-t border-border/80 scroll-mt-20">
+      <Container>
         <SectionHeading
-          eyebrow="Career Journey & Roles"
-          title="Professional Experience & Trajectory"
-          description="A documented track record across project coordination, program advisory, e-commerce account management, and web development."
+          eyebrow="02 &mdash; CAREER JOURNEY"
+          title="Professional Experience"
+          description="Documented execution across project coordination, client operations, e-commerce account management, and web development."
         />
-      </MotionReveal>
 
-      {/* Part 1: Detailed Professional Experience Cards */}
-      <div className="mb-20">
-        <MotionReveal delay={0.1}>
-          <div className="mb-8 flex items-center justify-between">
-            <div>
-              <h3 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <Briefcase className="h-5 w-5 text-primary" />
-                <span>Work Experience & Roles</span>
-              </h3>
-              <p className="text-sm text-muted-foreground mt-0.5">
-                Key accomplishments, responsibilities, and operational scope across past and current roles.
-              </p>
-            </div>
-          </div>
-        </MotionReveal>
+        {/* Vertical Timeline System with strict column separation to prevent any overlap */}
+        <div className="relative mt-12 sm:mt-16 max-w-5xl mx-auto">
+          {allTimelineItems.map((item, idx) => {
+            const isCurrent = idx === 0;
+            const isLast = idx === allTimelineItems.length - 1;
 
-        <div className="space-y-6">
-          {experienceData.map((item, idx) => (
-            <MotionReveal key={item.id} delay={0.08 * idx} direction="up">
-              <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
+            return (
+              <div
+                key={item.id}
+                className="timeline-entry flex items-start group"
               >
-                <Card className="hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 relative overflow-hidden group bg-card/90 backdrop-blur-sm">
-                  {/* Glowing Top Gradient Line */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-indigo-500 to-sky-400 opacity-80 group-hover:opacity-100 transition-opacity" />
-
-                  <CardHeader className="pb-4 pt-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <CardTitle className="text-lg sm:text-xl font-bold text-foreground">
-                            {item.role}
-                          </CardTitle>
-                          {idx === 0 && (
-                            <Badge variant="default" className="text-[10px] py-0 px-2 animate-pulse">
-                              Active Role
-                            </Badge>
-                          )}
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mt-1.5">
-                          <span className="flex items-center gap-1.5 font-semibold text-foreground">
-                            <Building2 className="h-4 w-4 text-primary" />
-                            {item.company}
-                          </span>
-                          {item.location && (
-                            <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                              <MapPin className="h-3.5 w-3.5" />
-                              {item.location}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-1.5 text-xs text-foreground font-mono bg-secondary/80 border border-border px-3 py-1.5 rounded-lg self-start sm:self-auto shadow-2xs">
-                        <Calendar className="h-3.5 w-3.5 text-primary" />
-                        <span>
-                          {item.start} — {item.end}
-                        </span>
-                      </div>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="space-y-4">
-                    <div>
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2.5">
-                        Key Responsibilities & Scope
-                      </h4>
-                      <ul className="space-y-2 text-sm text-muted-foreground">
-                        {item.responsibilities.map((resp, i) => (
-                          <li key={i} className="flex items-start gap-2.5">
-                            <span className="h-1.5 w-1.5 rounded-full bg-primary mt-2 shrink-0" />
-                            <span className="leading-relaxed">{resp}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {item.achievements && item.achievements.length > 0 && (
-                      <div className="pt-2">
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2.5">
-                          Key Impact & Outcomes
-                        </h4>
-                        <ul className="space-y-2 text-sm text-muted-foreground">
-                          {item.achievements.map((ach, i) => (
-                            <li key={i} className="flex items-start gap-2.5">
-                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 mt-2 shrink-0" />
-                              <span className="leading-relaxed font-medium text-foreground/90">
-                                {ach}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {item.skills && item.skills.length > 0 && (
-                      <div className="pt-3 border-t border-border/60 flex flex-wrap gap-1.5">
-                        {item.skills.map((skill) => (
-                          <Badge
-                            key={skill}
-                            variant="secondary"
-                            className="text-xs text-secondary-foreground font-normal hover:border-primary/40 transition-colors"
-                          >
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </MotionReveal>
-          ))}
-        </div>
-      </div>
-
-      {/* Part 2: Career Progression Arc Timeline */}
-      <div>
-        <MotionReveal delay={0.2}>
-          <div className="mb-8">
-            <h3 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
-              <span>Career Progression Arc</span>
-            </h3>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              Strategic arc connecting academic engineering training to active project execution and analytics.
-            </p>
-          </div>
-        </MotionReveal>
-
-        <div className="relative border-l-2 border-primary/20 ml-3 sm:ml-4 pl-6 sm:pl-8 space-y-8">
-          {careerMilestones.map((milestone, idx) => (
-            <MotionReveal
-              key={milestone.id}
-              delay={0.06 * idx}
-              direction="left"
-              className="relative group"
-            >
-              {/* Timeline marker */}
-              <span
-                className={`absolute -left-[31px] sm:-left-[39px] top-1.5 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full border-2 bg-background transition-all duration-300 ${
-                  milestone.isCurrent
-                    ? "border-primary bg-primary text-primary-foreground ring-4 ring-primary/20 scale-110 shadow-sm shadow-primary/40"
-                    : milestone.isFuture
-                    ? "border-dashed border-muted-foreground/50"
-                    : "border-primary/60 bg-card group-hover:border-primary group-hover:scale-105"
-                }`}
-              >
-                {milestone.isCurrent && (
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground animate-ping" />
-                )}
-              </span>
-
-              <motion.div
-                whileHover={{ y: -3 }}
-                transition={{ duration: 0.2 }}
-                className={`rounded-xl border p-5 sm:p-6 transition-all duration-300 ${
-                  milestone.isCurrent
-                    ? "border-primary/50 bg-card shadow-md shadow-primary/5 ring-1 ring-primary/20"
-                    : milestone.isFuture
-                    ? "border-dashed border-border/80 bg-card/40 opacity-80"
-                    : "border-border/80 bg-card hover:border-primary/40"
-                }`}
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      {milestone.stage}
-                    </span>
-                    {milestone.isCurrent && (
-                      <Badge variant="default" className="text-[10px] py-0 px-2">
-                        Active Focus
-                      </Badge>
-                    )}
-                    {milestone.isFuture && (
-                      <Badge variant="secondary" className="text-[10px] py-0 px-2">
-                        Direction
-                      </Badge>
-                    )}
+                {/* Column 1: Timeframe / Year (Desktop Only) */}
+                <div className="hidden md:block w-48 lg:w-56 shrink-0 text-right pr-6 lg:pr-8 pt-0.5">
+                  <div className="font-mono text-xs lg:text-sm font-semibold text-foreground whitespace-nowrap">
+                    {item.start} &mdash; {item.end}
                   </div>
-                  <span className="text-xs text-muted-foreground font-mono">
-                    {milestone.timeframe}
-                  </span>
+                  {isCurrent && (
+                    <div className="mt-1.5 flex justify-end">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-primary/15 text-primary border border-primary/30">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                        <span>Active Role</span>
+                      </span>
+                    </div>
+                  )}
                 </div>
 
-                <h4 className="text-base font-bold text-foreground">
-                  {milestone.title}
-                </h4>
+                {/* Column 2: Spine & Node Indicator */}
+                <div className="relative flex flex-col items-center shrink-0 w-8 md:w-10 self-stretch">
+                  {/* Background vertical track line */}
+                  {!isLast && (
+                    <div className="absolute top-3 bottom-0 w-[1.5px] bg-black/10 dark:bg-white/10 pointer-events-none" />
+                  )}
 
-                <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  {milestone.description}
-                </p>
+                  {/* Animated scroll-driven fill line */}
+                  {!isLast && (
+                    <div className="timeline-line-fill absolute top-3 bottom-0 w-[1.5px] bg-gradient-to-b from-primary via-[#FF9E40] to-primary/40 pointer-events-none origin-top scale-y-0" />
+                  )}
 
-                {milestone.highlight && (
-                  <div className="mt-3 flex items-center gap-1.5 text-xs text-primary font-semibold">
-                    <ChevronRight className="h-3.5 w-3.5 shrink-0" />
-                    <span>{milestone.highlight}</span>
+                  {/* Node Dot */}
+                  <div
+                    className={`relative z-10 flex items-center justify-center rounded-full border-2 transition-all duration-300 mt-1 ${
+                      isCurrent
+                        ? "h-4 w-4 bg-primary border-background ring-4 ring-primary/25 shadow-glow-sm scale-110"
+                        : "h-3.5 w-3.5 bg-background border-muted-foreground/60 group-hover:border-primary group-hover:scale-110"
+                    }`}
+                  />
+                </div>
+
+                {/* Column 3: Role Details & Concise Impact */}
+                <div className="flex-1 min-w-0 pl-4 md:pl-8 pb-12 sm:pb-16 space-y-3.5">
+                  {/* On Mobile: Display date badge directly above role title */}
+                  <div className="md:hidden flex flex-wrap items-center gap-2 mb-2">
+                    <span className="font-mono text-xs font-semibold text-foreground">
+                      {item.start} &mdash; {item.end}
+                    </span>
+                    {isCurrent && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-primary/15 text-primary border border-primary/30">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                        <span>Active Role</span>
+                      </span>
+                    )}
                   </div>
-                )}
 
-                {milestone.skills && milestone.skills.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-1.5 pt-2 border-t border-border/50">
-                    {milestone.skills.map((skill) => (
-                      <Badge
-                        key={skill}
-                        variant="secondary"
-                        className="text-[11px] font-normal"
-                      >
-                        {skill}
-                      </Badge>
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
+                      <span>{item.role}</span>
+                    </h3>
+
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground mt-1">
+                      <span className="flex items-center gap-1 font-medium text-foreground/90">
+                        <Building2 className="h-3.5 w-3.5 text-primary" />
+                        <span>{item.company}</span>
+                      </span>
+                      {item.location && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          <span>{item.location}</span>
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Concise Responsibilities (Max 3 points) */}
+                  <ul className="space-y-1.5 text-xs sm:text-sm text-muted-foreground">
+                    {item.responsibilities.slice(0, 3).map((resp, rIdx) => (
+                      <li key={rIdx} className="flex items-start gap-2.5">
+                        <span className="h-1.5 w-1.5 rounded-full bg-black/30 dark:bg-white/30 mt-2 shrink-0" />
+                        <span className="leading-relaxed">{resp}</span>
+                      </li>
                     ))}
-                  </div>
-                )}
-              </motion.div>
-            </MotionReveal>
-          ))}
+                  </ul>
+
+                  {/* Selected Impact / Outcome */}
+                  {item.achievements && item.achievements.length > 0 && (
+                    <div className="pt-1 flex items-start gap-2 text-xs sm:text-sm">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                      <span className="text-foreground/90 font-medium">
+                        {item.achievements[0]}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Compact Skill Tags */}
+                  {item.skills && item.skills.length > 0 && (
+                    <div className="pt-2 flex flex-wrap gap-1.5">
+                      {item.skills.slice(0, 5).map((skill) => (
+                        <span
+                          key={skill}
+                          className="text-[11px] px-2.5 py-0.5 rounded-full bg-surface-elevated text-muted-foreground border border-white/6 font-medium"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
-      </div>
-    </Section>
+      </Container>
+    </section>
   );
 }

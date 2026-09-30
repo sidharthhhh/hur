@@ -2,19 +2,12 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Menu, FileText, Linkedin, Github, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Menu, X, FileText, Linkedin, Github, Mail } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/constants";
 import { profileData } from "@/data/profile";
 import { ThemeToggle } from "./ThemeToggle";
 import { track } from "@/lib/analytics";
+import { motion, AnimatePresence } from "motion/react";
 
 interface MobileNavProps {
   activeSection: string;
@@ -23,107 +16,149 @@ interface MobileNavProps {
 export function MobileNav({ activeSection }: MobileNavProps) {
   const [open, setOpen] = React.useState(false);
 
+  // Prevent body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden h-9 w-9 rounded-md text-foreground"
-          aria-label="Open Navigation Menu"
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="right" className="w-[300px] sm:w-[350px] flex flex-col justify-between p-6">
-        <div>
-          <SheetHeader className="text-left pb-4 border-b border-border/60">
-            <SheetTitle className="text-base font-bold text-foreground">
-              {profileData.name}
-            </SheetTitle>
-            <p className="text-xs text-muted-foreground">{profileData.positioning.title}</p>
-          </SheetHeader>
+    <div className="lg:hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex h-8 w-8 items-center justify-center rounded-full text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus-visible:outline-none"
+        aria-label={open ? "Close Navigation Menu" : "Open Navigation Menu"}
+      >
+        {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+      </button>
 
-          <nav className="mt-6 flex flex-col space-y-1">
-            {NAV_ITEMS.map((item) => {
-              const targetId = item.href.replace("/#", "").replace("#", "");
-              const isActive = activeSection === targetId;
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setOpen(false)}
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+            />
 
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-primary/10 text-primary font-semibold"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                  }`}
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -15, scale: 0.98 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed top-16 left-4 right-4 z-50 rounded-2xl border border-black/10 dark:border-white/10 bg-card text-card-foreground p-5 shadow-2xl backdrop-blur-2xl"
+            >
+              <div className="flex items-center justify-between pb-3 mb-2 border-b border-black/8 dark:border-white/8">
+                <div>
+                  <p className="text-sm font-bold text-foreground">{profileData.name}</p>
+                  <p className="text-[11px] text-muted-foreground">{profileData.positioning.title}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <ThemeToggle />
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="p-1 rounded-md text-muted-foreground hover:text-foreground"
+                    aria-label="Close"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Navigation items */}
+              <nav className="flex flex-col space-y-1 py-1">
+                {NAV_ITEMS.map((item, idx) => {
+                  const targetId = item.href.replace("/#", "").replace("#", "");
+                  const isActive = activeSection === targetId;
+
+                  return (
+                    <motion.div
+                      key={item.href}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.03 * idx, duration: 0.2 }}
+                    >
+                      <Link
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
+                          isActive
+                            ? "bg-primary/15 text-primary font-semibold"
+                            : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5 hover:text-foreground"
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-primary" />}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+
+              {/* Bottom Actions */}
+              <div className="mt-4 pt-3 border-t border-black/8 dark:border-white/8 space-y-3">
+                <a
+                  href={profileData.resume}
+                  download
+                  onClick={() => {
+                    track("resume_download", { source: "mobile_nav" });
+                    setOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-primary text-white font-semibold text-xs shadow-xs transition-opacity hover:opacity-95"
                 >
-                  <span>{item.label}</span>
-                  {isActive && <span className="h-1.5 w-1.5 rounded-full bg-primary" />}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
+                  <FileText className="h-3.5 w-3.5" />
+                  <span>Download Résumé</span>
+                </a>
 
-        <div className="space-y-4 pt-6 border-t border-border/60">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Theme</span>
-            <ThemeToggle />
-          </div>
-
-          <Button
-            asChild
-            variant="default"
-            className="w-full justify-center gap-2 shadow-sm"
-            onClick={() => {
-              track("resume_download", { source: "mobile_nav" });
-              setOpen(false);
-            }}
-          >
-            <a href={profileData.resume} download>
-              <FileText className="h-4 w-4" />
-              <span>Download Resume</span>
-            </a>
-          </Button>
-
-          <div className="flex items-center justify-center gap-2 pt-2">
-            {profileData.linkedin ? (
-              <a
-                href={profileData.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="rounded-full p-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-              >
-                <Linkedin className="h-4 w-4" />
-              </a>
-            ) : null}
-            {profileData.github ? (
-              <a
-                href={profileData.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="rounded-full p-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-              >
-                <Github className="h-4 w-4" />
-              </a>
-            ) : null}
-            {profileData.email ? (
-              <a
-                href={`mailto:${profileData.email}`}
-                aria-label="Email"
-                className="rounded-full p-2 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-              >
-                <Mail className="h-4 w-4" />
-              </a>
-            ) : null}
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+                <div className="flex items-center justify-center gap-4 text-muted-foreground pt-1">
+                  {profileData.linkedin && (
+                    <a
+                      href={profileData.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                      className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground transition-colors"
+                    >
+                      <Linkedin className="h-4 w-4" />
+                    </a>
+                  )}
+                  {profileData.github && (
+                    <a
+                      href={profileData.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="GitHub"
+                      className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground transition-colors"
+                    >
+                      <Github className="h-4 w-4" />
+                    </a>
+                  )}
+                  {profileData.email && (
+                    <a
+                      href={`mailto:${profileData.email}`}
+                      aria-label="Email"
+                      className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground transition-colors"
+                    >
+                      <Mail className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

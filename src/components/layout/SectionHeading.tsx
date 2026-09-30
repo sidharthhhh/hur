@@ -19,7 +19,7 @@ export function SectionHeading({
   return (
     <div
       className={cn(
-        "mb-12 sm:mb-16",
+        "mb-10 sm:mb-14",
         align === "center" && "text-center max-w-2xl mx-auto",
         align === "left" && "max-w-3xl",
         className
@@ -27,18 +27,18 @@ export function SectionHeading({
       {...props}
     >
       {eyebrow && (
-        <div className="mb-2 inline-flex items-center gap-2">
+        <div className="mb-3 inline-flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+          <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             {eyebrow}
           </span>
         </div>
       )}
-      <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground leading-[1.18]">
         {title}
       </h2>
       {description && (
-        <p className="mt-3 text-base text-muted-foreground sm:text-lg leading-relaxed">
+        <p className="mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
           {description}
         </p>
       )}

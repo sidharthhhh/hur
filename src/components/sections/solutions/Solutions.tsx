@@ -1,58 +1,107 @@
 "use client";
 
 import React from "react";
-import { Section } from "@/components/layout/Section";
+import { Container } from "@/components/layout/Container";
 import { SectionHeading } from "@/components/layout/SectionHeading";
-import { profileData } from "@/data/profile";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  MotionReveal,
-  MotionStagger,
-  MotionStaggerItem,
-} from "@/components/motion/MotionWrapper";
+  CalendarClock,
+  BarChart3,
+  TrendingUp,
+  Users2,
+  FileCheck,
+  ShoppingBag,
+  LayoutGrid,
+} from "lucide-react";
 import { motion } from "motion/react";
-import { CheckCircle2 } from "lucide-react";
+
+interface SolutionItem {
+  title: string;
+  copy: string;
+  icon: React.ElementType;
+}
+
+const solutionCapabilities: SolutionItem[] = [
+  {
+    title: "Project Planning & Tracking",
+    copy: "Structure milestone baselines, inter-team dependencies, and delivery schedules to maintain predictable sprint execution.",
+    icon: CalendarClock,
+  },
+  {
+    title: "Business Operations & Reporting",
+    copy: "Turn operational tracking logs into clear executive reporting, SLA monitoring, and decision visibility.",
+    icon: TrendingUp,
+  },
+  {
+    title: "Data Dashboards & Analytics",
+    copy: "Build practical dashboards around core business questions using Power BI, SQL, and advanced Excel.",
+    icon: BarChart3,
+  },
+  {
+    title: "Cross-Functional Coordination",
+    copy: "Keep technical development teams, operations, and external stakeholders continuously aligned across cadences.",
+    icon: Users2,
+  },
+  {
+    title: "Process Documentation & SLAs",
+    copy: "Create repeatable standard operating procedures, documentation frameworks, and SLA compliance benchmarks.",
+    icon: FileCheck,
+  },
+  {
+    title: "E-Commerce Account Operations",
+    copy: "Manage client account workflows, rapid escalation triage, and day-to-day operational deliverables.",
+    icon: ShoppingBag,
+  },
+  {
+    title: "Frontend Web Solutions",
+    copy: "Build responsive, accessible web interfaces tailored to real-world user workflows using modern JavaScript, HTML, and CSS.",
+    icon: LayoutGrid,
+  },
+];
 
 export function Solutions() {
-  const { solutions } = profileData;
-
   return (
-    <Section id="solutions" className="border-t border-border/60 bg-card/20">
-      <MotionReveal>
+    <section id="solutions" className="relative py-16 sm:py-24 border-t border-border/80 scroll-mt-20">
+      <Container>
         <SectionHeading
-          eyebrow="Solutions & Value Creation"
-          title={solutions.heading}
-          description={solutions.intro}
+          eyebrow="08 &mdash; VALUE CREATION"
+          title="Technology & Business Solutions"
+          description="Applying structured project coordination, data analytics, and software workflows to optimize operational delivery."
         />
-      </MotionReveal>
 
-      <MotionStagger staggerDelay={0.06} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {solutions.areas.map((area) => (
-          <MotionStaggerItem key={area}>
-            <motion.div
-              whileHover={{ y: -6 }}
-              transition={{ duration: 0.2 }}
-              className="h-full"
-            >
-              <Card className="h-full hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 relative overflow-hidden group bg-card/90">
-                <CardHeader className="p-6 pb-2 flex-row items-center gap-3 space-y-0">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground shadow-2xs">
-                    <CheckCircle2 className="h-4 w-4" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 mt-12">
+          {solutionCapabilities.map((item, idx) => {
+            const Icon = item.icon;
+            // Let the 7th item span 2 columns on lg or fit cleanly
+            const isFullWidth = idx === 6;
+
+            return (
+              <motion.div
+                key={item.title}
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2 }}
+                className={`rounded-2xl border border-black/8 dark:border-white/8 bg-card text-card-foreground p-6 flex flex-col justify-between transition-all duration-300 hover:border-primary/40 shadow-sm group ${
+                  isFullWidth ? "md:col-span-2 lg:col-span-3 lg:flex-row lg:items-center" : ""
+                }`}
+              >
+                <div className={`space-y-3 ${isFullWidth ? "lg:flex lg:items-center lg:gap-5 lg:space-y-0" : ""}`}>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-elevated text-primary border border-black/6 dark:border-white/6 shrink-0 transition-colors group-hover:bg-primary group-hover:text-white">
+                    <Icon className="h-5 w-5" />
                   </div>
-                  <CardTitle className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
-                    {area}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 pt-2">
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                    Applying structured project planning, data models, and analytical tools to streamline operational workflows and eliminate bottlenecks.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </MotionStaggerItem>
-        ))}
-      </MotionStagger>
-    </Section>
+
+                  <div>
+                    <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className={`text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1 ${isFullWidth ? "lg:max-w-3xl" : ""}`}>
+                      {item.copy}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </Container>
+    </section>
   );
 }

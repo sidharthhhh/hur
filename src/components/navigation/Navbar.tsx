@@ -2,14 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { FileText, Linkedin, Github, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Container } from "@/components/layout/Container";
+import { FileText, Linkedin, Github } from "lucide-react";
 import { NAV_ITEMS, SECTION_IDS } from "@/lib/constants";
 import { profileData } from "@/data/profile";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileNav } from "./MobileNav";
 import { track } from "@/lib/analytics";
+import { motion } from "motion/react";
 
 export function Navbar() {
   const [scrolled, setScrolled] = React.useState(false);
@@ -22,10 +21,10 @@ export function Navbar() {
       const height =
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
-      const scrolledPercent = (winScroll / height) * 100;
+      const scrolledPercent = height > 0 ? (winScroll / height) * 100 : 0;
 
       setScrollProgress(scrolledPercent);
-      setScrolled(winScroll > 20);
+      setScrolled(winScroll > 30);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -44,7 +43,7 @@ export function Navbar() {
     };
 
     const observerOptions = {
-      rootMargin: "-20% 0px -60% 0px",
+      rootMargin: "-25% 0px -55% 0px",
       threshold: 0.1,
     };
 
@@ -60,119 +59,123 @@ export function Navbar() {
 
   return (
     <>
-      {/* Scroll Progress Bar */}
+      {/* Top Scroll Progress Line */}
       <div
         id="scroll-progress"
         style={{ transform: `scaleX(${scrollProgress / 100})` }}
       />
 
+      {/* Floating Capsule Header Container */}
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          scrolled
-            ? "bg-background/80 backdrop-blur-md border-b border-border/80 shadow-sm py-2.5"
-            : "bg-transparent py-4"
-        }`}
+        className="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-50 w-full px-4 flex justify-center pointer-events-none"
       >
-        <Container>
-          <div className="flex items-center justify-between">
-            {/* Logo / Brand Name with subtle glow badge */}
-            <Link
-              href="/#hero"
-              className="group flex items-center gap-2.5 focus-visible:outline-none"
-            >
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-500 text-primary-foreground shadow-sm shadow-primary/30 transition-transform duration-300 group-hover:scale-105">
-                <span className="font-extrabold text-sm tracking-wider">
-                  {profileData.name.charAt(0)}
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-bold tracking-tight text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  {profileData.name}
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                </span>
-                <span className="text-[11px] font-medium text-muted-foreground hidden sm:inline-block">
-                  {profileData.positioning.title}
-                </span>
-              </div>
-            </Link>
+        <motion.div
+          initial={{ y: -30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className={`pointer-events-auto flex items-center justify-between gap-3 sm:gap-6 rounded-full border transition-all duration-300 ${
+            scrolled
+              ? "py-1.5 px-3 sm:px-4 bg-white/95 dark:bg-[#111111]/90 border-black/10 dark:border-white/12 shadow-2xl backdrop-blur-xl scale-[0.98]"
+              : "py-2 px-3.5 sm:px-5 bg-white/90 dark:bg-[#141414]/85 border-black/8 dark:border-white/8 shadow-xl backdrop-blur-lg scale-100"
+          }`}
+        >
+          {/* Logo / Brand Name */}
+          <Link
+            href="/#hero"
+            className="group flex items-center gap-2 focus-visible:outline-none"
+            aria-label="Sakshi Home"
+          >
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-tr from-primary to-[#FF9E40] text-white text-xs font-bold shadow-xs transition-transform duration-200 group-hover:scale-105">
+              <span>{profileData.name.charAt(0)}</span>
+            </div>
+            <span className="text-xs sm:text-sm font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary flex items-center gap-1.5">
+              {profileData.name}
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+            </span>
+          </Link>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-1 rounded-full border border-border/80 bg-card/70 backdrop-blur-md px-3 py-1 text-xs font-medium text-muted-foreground shadow-xs">
-              {NAV_ITEMS.map((item) => {
-                const targetId = item.href.replace("/#", "").replace("#", "");
-                const isActive = activeSection === targetId;
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-1 text-[13px] font-medium text-muted-foreground">
+            {NAV_ITEMS.map((item) => {
+              const targetId = item.href.replace("/#", "").replace("#", "");
+              const isActive = activeSection === targetId;
 
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`relative px-3 py-1.5 rounded-full transition-all duration-200 ${
-                      isActive
-                        ? "text-primary font-semibold shadow-xs"
-                        : "hover:text-foreground hover:bg-accent/60"
-                    }`}
-                  >
-                    {isActive && (
-                      <span className="absolute inset-0 rounded-full bg-primary/10 border border-primary/20 -z-10 animate-fade-in" />
-                    )}
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`relative px-3 py-1 rounded-full transition-all duration-150 ${
+                    isActive
+                      ? "text-foreground font-semibold"
+                      : "hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeNavIndicator"
+                      className="absolute inset-0 rounded-full bg-primary/12 border border-primary/25 -z-10"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <span className={isActive ? "text-primary" : ""}>
                     {item.label}
-                  </Link>
-                );
-              })}
-            </nav>
+                  </span>
+                </Link>
+              );
+            })}
+          </nav>
 
-            {/* Right Action Icons & Resume */}
-            <div className="flex items-center gap-2">
-              {profileData.linkedin ? (
+          {/* Right Action Icons & Resume */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="hidden sm:flex items-center gap-0.5 pr-1 border-r border-border/60">
+              {profileData.linkedin && (
                 <a
                   href={profileData.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="LinkedIn"
+                  aria-label="LinkedIn Profile"
                   onClick={() =>
                     track("external_profile_click", { platform: "linkedin" })
                   }
-                  className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200 hover:scale-105"
+                  className="flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
                 >
-                  <Linkedin className="h-4 w-4" />
+                  <Linkedin className="h-3.5 w-3.5" />
                 </a>
-              ) : null}
+              )}
 
-              {profileData.github ? (
+              {profileData.github && (
                 <a
                   href={profileData.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="GitHub"
+                  aria-label="GitHub Profile"
                   onClick={() =>
                     track("external_profile_click", { platform: "github" })
                   }
-                  className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200 hover:scale-105"
+                  className="flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
                 >
-                  <Github className="h-4 w-4" />
+                  <Github className="h-3.5 w-3.5" />
                 </a>
-              ) : null}
+              )}
 
               <ThemeToggle />
-
-              <Button
-                asChild
-                variant="outline"
-                size="sm"
-                className="hidden sm:inline-flex gap-1.5 rounded-full text-xs font-medium border-border hover:border-primary/50 shadow-xs hover:shadow-primary/20 transition-all duration-200 hover:scale-102"
-                onClick={() => track("resume_download", { source: "navbar" })}
-              >
-                <a href={profileData.resume} download>
-                  <FileText className="h-3.5 w-3.5 text-primary" />
-                  <span>Resume</span>
-                </a>
-              </Button>
-
-              {/* Mobile Nav trigger */}
-              <MobileNav activeSection={activeSection} />
             </div>
+
+            {/* Resume CTA */}
+            <a
+              href={profileData.resume}
+              download
+              onClick={() => track("resume_download", { source: "navbar" })}
+              className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/20 text-foreground hover:border-primary/60 px-3 py-1 text-xs font-semibold transition-all duration-200"
+            >
+              <FileText className="h-3 w-3 text-primary" />
+              <span>Resume</span>
+            </a>
+
+            {/* Mobile Nav trigger */}
+            <MobileNav activeSection={activeSection} />
           </div>
-        </Container>
+        </motion.div>
       </header>
     </>
   );

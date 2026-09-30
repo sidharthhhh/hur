@@ -1,142 +1,127 @@
 "use client";
 
 import React from "react";
-import { Section } from "@/components/layout/Section";
-import { SectionHeading } from "@/components/layout/SectionHeading";
+import { Container } from "@/components/layout/Container";
 import { profileData } from "@/data/profile";
 import { ContactForm } from "./ContactForm";
-import { Card, CardContent } from "@/components/ui/card";
-import { MotionReveal } from "@/components/motion/MotionWrapper";
-import { motion } from "motion/react";
-import { Mail, Linkedin, Github, MessageSquare, Clock } from "lucide-react";
+import { Mail, Linkedin, Github, Clock, MapPin, ArrowUpRight } from "lucide-react";
 
 export function Contact() {
-  const { contact } = profileData;
-
   return (
-    <Section id="contact" className="border-t border-border/60 relative overflow-hidden">
-      {/* Background ambient glow */}
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.25, 0.45, 0.25],
-        }}
-        transition={{
-          duration: 7,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="pointer-events-none absolute -bottom-24 right-1/4 w-96 h-96 bg-primary/15 rounded-full blur-3xl -z-10"
-      />
+    <section id="contact" className="relative py-16 sm:py-24 border-t border-border/80 scroll-mt-20">
+      <Container>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          {/* Left Column: Direct channels and headline */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="inline-flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              <span className="text-[11px] font-mono uppercase tracking-[0.16em] text-muted-foreground">
+                09 &mdash; GET IN TOUCH
+              </span>
+            </div>
 
-      <MotionReveal>
-        <SectionHeading
-          eyebrow="Get in Touch"
-          title={contact.heading}
-          description={contact.body}
-        />
-      </MotionReveal>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.12]">
+              Let&apos;s build something{" "}
+              <span className="text-primary">useful</span>.
+            </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        {/* Contact Info Sidebar */}
-        <MotionReveal delay={0.1} direction="left" className="lg:col-span-5 space-y-6">
-          <Card className="border-primary/30 bg-card/80 backdrop-blur-md shadow-lg shadow-primary/5">
-            <CardContent className="p-6 sm:p-8 space-y-6">
-              <div>
-                <h3 className="text-lg font-bold text-foreground mb-1 flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5 text-primary" />
-                  <span>Direct Communication</span>
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  Feel free to reach out directly through email, LinkedIn, or send a message using the form.
-                </p>
-              </div>
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+              Whether you are looking to discuss project coordination, data analytics, operational pipelines, or prospective engineering opportunities, I&apos;d love to connect.
+            </p>
 
-              <div className="space-y-4 text-sm">
-                {profileData.email && (
-                  <motion.a
-                    whileHover={{ x: 4 }}
-                    href={`mailto:${profileData.email}`}
-                    className="flex items-center gap-3.5 text-muted-foreground hover:text-foreground transition-colors group p-2.5 rounded-xl hover:bg-accent"
-                  >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200 shadow-2xs">
-                      <Mail className="h-5 w-5" />
+            {/* Direct Channels */}
+            <div className="space-y-3 pt-3">
+              {profileData.email && (
+                <a
+                  href={`mailto:${profileData.email}`}
+                  className="flex items-center justify-between p-3.5 rounded-xl border border-black/8 dark:border-white/8 bg-card text-card-foreground hover:border-primary/40 shadow-sm transition-colors group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-elevated text-primary border border-black/6 dark:border-white/6">
+                      <Mail className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-muted-foreground">Email</p>
-                      <p className="font-bold text-foreground text-xs sm:text-sm">
-                        {profileData.email}
-                      </p>
+                      <span className="text-[10px] text-muted-foreground font-mono uppercase block">Email</span>
+                      <span className="text-xs sm:text-sm font-semibold text-foreground">{profileData.email}</span>
                     </div>
-                  </motion.a>
-                )}
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </a>
+              )}
 
-                {profileData.linkedin && (
-                  <motion.a
-                    whileHover={{ x: 4 }}
-                    href={profileData.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3.5 text-muted-foreground hover:text-foreground transition-colors group p-2.5 rounded-xl hover:bg-accent"
-                  >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200 shadow-2xs">
-                      <Linkedin className="h-5 w-5" />
+              {profileData.linkedin && (
+                <a
+                  href={profileData.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3.5 rounded-xl border border-black/8 dark:border-white/8 bg-card text-card-foreground hover:border-primary/40 shadow-sm transition-colors group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-elevated text-primary border border-black/6 dark:border-white/6">
+                      <Linkedin className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-muted-foreground">LinkedIn</p>
-                      <p className="font-bold text-foreground text-xs sm:text-sm">
-                        Connect on LinkedIn
-                      </p>
+                      <span className="text-[10px] text-muted-foreground font-mono uppercase block">LinkedIn</span>
+                      <span className="text-xs sm:text-sm font-semibold text-foreground">Connect on LinkedIn</span>
                     </div>
-                  </motion.a>
-                )}
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </a>
+              )}
 
-                {profileData.github && (
-                  <motion.a
-                    whileHover={{ x: 4 }}
-                    href={profileData.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3.5 text-muted-foreground hover:text-foreground transition-colors group p-2.5 rounded-xl hover:bg-accent"
-                  >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-200 shadow-2xs">
-                      <Github className="h-5 w-5" />
+              {profileData.github && (
+                <a
+                  href={profileData.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3.5 rounded-xl border border-black/8 dark:border-white/8 bg-card text-card-foreground hover:border-primary/40 shadow-sm transition-colors group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-elevated text-primary border border-black/6 dark:border-white/6">
+                      <Github className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-muted-foreground">GitHub</p>
-                      <p className="font-bold text-foreground text-xs sm:text-sm">
-                        View Code Repositories
-                      </p>
+                      <span className="text-[10px] text-muted-foreground font-mono uppercase block">GitHub</span>
+                      <span className="text-xs sm:text-sm font-semibold text-foreground">View Code Repositories</span>
                     </div>
-                  </motion.a>
-                )}
-              </div>
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </a>
+              )}
+            </div>
 
-              <div className="pt-4 border-t border-border/60 flex items-center gap-2 text-xs text-muted-foreground">
-                <Clock className="h-4 w-4 text-primary shrink-0" />
-                <span>Typically responds within 24-48 business hours.</span>
-              </div>
-            </CardContent>
-          </Card>
-        </MotionReveal>
+            <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center gap-3 text-xs text-muted-foreground">
+              {profileData.location && (
+                <span className="inline-flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5 text-primary" />
+                  <span>{profileData.location}</span>
+                </span>
+              )}
+              <span className="hidden sm:inline text-black/20 dark:text-white/20">&bull;</span>
+              <span className="inline-flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5 text-primary" />
+                <span>Typically responds within 24-48 hours</span>
+              </span>
+            </div>
+          </div>
 
-        {/* Contact Form Card */}
-        <MotionReveal delay={0.2} direction="right" className="lg:col-span-7">
-          <Card className="border-border shadow-lg bg-card/90 backdrop-blur-md">
-            <CardContent className="p-6 sm:p-8">
-              <div className="mb-6">
-                <h3 className="text-xl font-bold text-foreground">
-                  Send a Message
+          {/* Right Column: Minimal Form Card */}
+          <div className="lg:col-span-7">
+            <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-card text-card-foreground p-6 sm:p-8 shadow-xl">
+              <div className="mb-5">
+                <h3 className="text-lg font-bold text-foreground">
+                  Send a direct message
                 </h3>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Have a question, collaboration proposal, or project discussion? Fill in the details below.
+                  Leave a note with your project scope or inquiries, and I&apos;ll get back to you promptly.
                 </p>
               </div>
+
               <ContactForm />
-            </CardContent>
-          </Card>
-        </MotionReveal>
-      </div>
-    </Section>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
   );
 }
