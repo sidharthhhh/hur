@@ -1,70 +1,93 @@
 import { ProfileData } from "@/types";
 
 export const profileData: ProfileData = {
+  // Identity & Links
   name: "Sakshi",
   location: "Indore, Madhya Pradesh, India",
-  email: "contact@sakshii.dev",
+  email: "contact@sakshii.dev", // Update to personal email or leave as preferred
   linkedin: "https://www.linkedin.com/in/sakshiii8/",
   github: "https://github.com/sakshiii8",
-  site_url: "https://sakshhiiii.vercel.app",
+  site_url: "https://sakshi-portfolio.vercel.app",
   resume: "/resume.pdf",
 
+  // Positioning & Copy
   positioning: {
-    title: "Project Coordinator & Data Analytics",
-    tagline: "Operations · Data · Web",
+    title: "Technology & Business Professional",
+    tagline: "Project Coordination • Data Analytics • Operations",
     intro:
-      "Engineering graduate with hands-on experience in project coordination, customer operations, e-commerce account management, and web development. Currently deepening skills in SQL, Python, and data analytics to solve practical business problems.",
+      "Engineering graduate with cross-functional experience across project coordination, client operations, e-commerce account management, and web technologies. Currently deepening capabilities in data analytics and technology solutions.",
   },
 
   what_i_bring: [
     {
+      title: "Technical Foundation",
+      description: "Engineering education combining computational logic, software workflows, and structured problem solving.",
+      iconName: "Cpu",
+    },
+    {
       title: "Project Coordination",
-      description: "Tracking timelines, coordinating cross-functional deliverables, and keeping team communication aligned.",
+      description: "Proven ability to track schedules, coordinate cross-functional tasks, and maintain clear stakeholder alignment.",
       iconName: "Briefcase",
     },
     {
-      title: "Data & Reporting",
-      description: "Working with Excel, SQL, and Power BI to turn daily operational records into clear reports.",
-      iconName: "BarChart3",
-    },
-    {
-      title: "Customer & Client Operations",
-      description: "Direct experience in account management, program advisory, and resolving client escalations.",
+      title: "Operational Empathy",
+      description: "Hands-on experience in program advisory and account management resolving client friction points.",
       iconName: "Users",
     },
     {
-      title: "Frontend Basics",
-      description: "Practical background building responsive web interfaces with JavaScript, HTML, and CSS.",
-      iconName: "Cpu",
+      title: "Analytical Thinking",
+      description: "Translating operational KPIs and data reports into actionable visibility and process enhancements.",
+      iconName: "BarChart3",
+    },
+    {
+      title: "Communication",
+      description: "Clear, proactive communication across project managers, technical teams, and executive stakeholders.",
+      iconName: "MessageSquare",
+    },
+    {
+      title: "Problem Solving",
+      description: "Systematic root-cause resolution to keep projects on track and eliminate workflow delays.",
+      iconName: "Lightbulb",
+    },
+    {
+      title: "Web Technologies",
+      description: "Practical web development experience building responsive user interfaces with JavaScript, HTML, and CSS.",
+      iconName: "Layers",
+    },
+    {
+      title: "Continuous Learning",
+      description: "Disciplined curiosity constantly expanding capabilities in data analytics, SQL, Python, and system design.",
+      iconName: "TrendingUp",
     },
   ],
 
   solutions: {
-    heading: "Areas of Work",
-    intro: "What I help teams and projects with today.",
+    heading: "Technology & Business Solutions",
+    intro: "Applying structured project coordination, analytics, and technology to optimize operational workflows.",
     areas: [
-      "Project Coordination & Milestone Tracking",
-      "Operational Reporting & Excel Modeling",
-      "SQL Data Queries & Power BI Views",
+      "Project Planning & Tracking",
+      "Business Operations & Reporting",
+      "Data Dashboards & Analytics",
+      "Cross-Functional Coordination",
+      "Process Documentation & SLAs",
       "E-Commerce Account Operations",
-      "Process Documentation & SLA Tracking",
-      "Responsive Frontend Interfaces",
+      "Frontend Web Solutions",
     ],
   },
 
   philosophy: {
-    heading: "How I Work",
-    body: "I believe good work comes from curiosity, structured follow-through, and understanding the people behind every process. Whether coordinating project timelines or querying datasets, I focus on clarity, accuracy, and continuous improvement.",
+    heading: "Built for Continuous Growth",
+    body: "My career is driven by curiosity, rigorous execution, and a commitment to solving complex operational and technical problems. I believe great solutions require both technical competence and clear alignment with business and human needs.",
   },
 
   contact: {
-    heading: "Have something interesting in mind?",
-    body: "I'm always open to conversations around project coordination, data analytics, web projects, and new opportunities.",
+    heading: "Let's Connect",
+    body: "Whether you're looking to discuss project coordination, data analytics, technology solutions, or prospective opportunities, I'd love to connect.",
   },
 
   seo: {
-    title: "Sakshi — Operations, Data & Technology",
+    title: "Sakshi — Technology & Business Professional",
     description:
-      "Personal website of Sakshi, an engineering graduate working across project coordination, data analytics, and operations.",
+      "Engineering graduate with experience across project coordination, client operations, e-commerce account management, and data analytics.",
   },
 };

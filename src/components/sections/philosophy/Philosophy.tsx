@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import { Section } from "@/components/layout/Section";
 import { profileData } from "@/data/profile";
-import { AnimatedContainer } from "@/components/motion/AnimatedContainer";
+import { MotionReveal } from "@/components/motion/MotionWrapper";
+import { motion } from "motion/react";
 import { TrendingUp } from "lucide-react";
 
 export function Philosophy() {
@@ -9,10 +12,14 @@ export function Philosophy() {
 
   return (
     <Section id="philosophy" className="border-t border-border/60">
-      <AnimatedContainer>
-        <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-card via-card to-primary/5 p-8 sm:p-12">
+      <MotionReveal>
+        <motion.div
+          whileHover={{ scale: 1.01 }}
+          transition={{ duration: 0.3 }}
+          className="relative overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-card via-card to-primary/10 p-8 sm:p-12 shadow-lg shadow-primary/5"
+        >
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary mb-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary mb-4">
               <TrendingUp className="h-3.5 w-3.5" />
               <span>Core Mindset</span>
             </div>
@@ -25,8 +32,8 @@ export function Philosophy() {
               {philosophy.body}
             </p>
           </div>
-        </div>
-      </AnimatedContainer>
+        </motion.div>
+      </MotionReveal>
     </Section>
   );
 }

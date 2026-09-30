@@ -4,19 +4,27 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Selected Work", href: "/#work" },
-  { label: "Experience", href: "/#experience" },
+  { label: "Home", href: "/#hero" },
   { label: "About", href: "/#about" },
-  { label: "Toolkit", href: "/#skills" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Case Studies", href: "/#case-studies" },
+  { label: "Skills", href: "/#skills" },
+  { label: "Learning", href: "/#learning" },
   { label: "Contact", href: "/#contact" },
 ];
 
 export const SECTION_IDS = [
   "hero",
-  "work",
-  "experience",
   "about",
+  "experience",
+  "projects",
+  "case-studies",
   "skills",
   "learning",
+  "education",
+  "certifications",
+  "solutions",
+  "philosophy",
   "contact",
 ];

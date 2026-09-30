@@ -1,92 +1,143 @@
+"use client";
+
 import React from "react";
-import { Container } from "@/components/layout/Container";
-import { GraduationCap, MapPin, Compass, BookOpen } from "lucide-react";
+import { Section } from "@/components/layout/Section";
+import { SectionHeading } from "@/components/layout/SectionHeading";
+import { profileData } from "@/data/profile";
+import {
+  MotionReveal,
+  MotionStagger,
+  MotionStaggerItem,
+} from "@/components/motion/MotionWrapper";
+import { motion } from "motion/react";
+import {
+  Cpu,
+  Briefcase,
+  Users,
+  BarChart3,
+  MessageSquare,
+  Lightbulb,
+  Layers,
+  TrendingUp,
+  LucideIcon,
+  CheckCircle2,
+} from "lucide-react";
+
+const iconMap: Record<string, LucideIcon> = {
+  Cpu,
+  Briefcase,
+  Users,
+  BarChart3,
+  MessageSquare,
+  Lightbulb,
+  Layers,
+  TrendingUp,
+};
 
 export function About() {
   return (
-    <section id="about" className="py-20 sm:py-28 border-t border-border">
-      <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column: Heading & Narrative */}
-          <div className="lg:col-span-7 space-y-6">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
-                03 &bull; Story
-              </p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-                A little about me
-              </h2>
-            </div>
+    <Section id="about" className="border-t border-border/60 bg-card/20">
+      <MotionReveal>
+        <SectionHeading
+          eyebrow="Background & Identity"
+          title="Engineering Precision Meets Business Execution"
+          description="A multidisciplinary background spanning engineering foundations, interactive web development, e-commerce account management, program advisory, and active project coordination."
+        />
+      </MotionReveal>
 
-            <div className="space-y-4 text-base sm:text-lg text-muted-foreground leading-relaxed font-normal">
-              <p>
-                I graduated with a <strong className="text-foreground font-semibold">Bachelor of Technology (B.Tech)</strong> from <strong className="text-foreground font-semibold">Oriental Institute of Science and Technology</strong> in 2024. My interest in technology started with engineering fundamentals and frontend development during my internship at TenSketch.
-              </p>
-              <p>
-                Moving into client-facing operations and account management at TP and Splash India taught me how much of real problem-solving is about people, communication, and clear operational processes—not just lines of code.
-              </p>
-              <p>
-                As an <strong className="text-foreground font-semibold">Assistant Project Coordinator</strong> at Innosecure Technologies, I coordinate timelines, monitor deliverables, and keep cross-functional teams aligned.
-              </p>
-              <p>
-                Right now, I am channeling this operational grounding into <strong className="text-foreground font-semibold">data analytics</strong>—building strong hands-on capabilities in SQL, Python, Excel, and Power BI to turn everyday business data into actionable insight.
-              </p>
-            </div>
-          </div>
+      {/* Narrative overview with glassmorphism card */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-16 items-start">
+        <MotionReveal
+          delay={0.1}
+          direction="left"
+          className="lg:col-span-7 space-y-4 text-base text-muted-foreground leading-relaxed"
+        >
+          <p>
+            With a <strong className="text-foreground font-semibold">Bachelor of Technology (B.Tech)</strong> from{" "}
+            <strong className="text-foreground font-semibold">Oriental Institute of Science and Technology</strong>, I approach systems through structured analytical thinking, technical problem solving, and process discipline.
+          </p>
+          <p>
+            My professional journey bridges technical development and operational leadership—from building interactive web applications at <strong className="text-foreground font-semibold">TenSketch</strong>, to managing high-stakes client deliverables at <strong className="text-foreground font-semibold">TP</strong>, delivering program advisory at <strong className="text-foreground font-semibold">Splash India</strong>, and currently driving timeline execution as <strong className="text-foreground font-semibold">Assistant Project Coordinator</strong> at <strong className="text-foreground font-semibold">Innosecure Technologies</strong>.
+          </p>
+          <p>
+            I am passionate about combining data analytics, process automation, and technology solutions to keep complex multi-stakeholder projects delivered on schedule and with high operational clarity.
+          </p>
+        </MotionReveal>
 
-          {/* Right Column: Personal Details & Education Box */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="rounded-xl border border-border bg-card/60 p-6 sm:p-7 space-y-6">
-              <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                At a Glance
-              </h3>
+        <MotionReveal delay={0.2} direction="right" className="lg:col-span-5">
+          <motion.div
+            whileHover={{ y: -4, borderColor: "hsl(var(--primary) / 0.5)" }}
+            className="rounded-2xl border border-primary/20 bg-card/70 backdrop-blur-md p-6 sm:p-8 space-y-4 shadow-sm shadow-primary/5 transition-all duration-300"
+          >
+            <h3 className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-2">
+              <span className="flex h-2 w-2 rounded-full bg-primary animate-ping" />
+              <span>Core Strengths & Focus</span>
+            </h3>
 
-              <div className="space-y-4 text-sm">
-                <div className="flex items-start gap-3">
-                  <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-foreground">Location</p>
-                    <p className="text-muted-foreground text-xs">Indore, Madhya Pradesh, India</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <GraduationCap className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-foreground">Education</p>
-                    <p className="text-muted-foreground text-xs">
-                      B.Tech in Engineering (2020 — 2024)
-                    </p>
-                    <p className="text-muted-foreground/80 text-[11px]">
-                      Oriental Institute of Science & Technology
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Compass className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-foreground">Current Direction</p>
-                    <p className="text-muted-foreground text-xs">
-                      Project Coordination, Data Analytics & Business Intelligence
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <BookOpen className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-foreground">Personal Interests</p>
-                    <p className="text-muted-foreground text-xs">
-                      Learning new tools, technology systems, reading, and problem solving
-                    </p>
-                  </div>
-                </div>
+            <div className="space-y-3.5 text-sm">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                <p>
+                  <strong className="text-foreground">Project Coordination:</strong> Tracking schedules, milestone baselines, task assignment, and proactive risk triage.
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                <p>
+                  <strong className="text-foreground">Data Analytics:</strong> Building actionable Excel models, SQL queries, and Power BI operational reporting.
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                <p>
+                  <strong className="text-foreground">Technical Foundation:</strong> Web development proficiency (JavaScript, HTML, CSS) and engineering discipline.
+                </p>
               </div>
             </div>
+          </motion.div>
+        </MotionReveal>
+      </div>
+
+      {/* What I Bring Cards */}
+      <div>
+        <MotionReveal delay={0.1}>
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold tracking-tight text-foreground">
+                What I Bring to Teams & Projects
+              </h3>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                Cross-functional capabilities honed through technical training and direct project execution.
+              </p>
+            </div>
           </div>
-        </div>
-      </Container>
-    </section>
+        </MotionReveal>
+
+        <MotionStagger staggerDelay={0.07} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {profileData.what_i_bring.map((item) => {
+            const Icon = iconMap[item.iconName] || Lightbulb;
+            return (
+              <MotionStaggerItem key={item.title}>
+                <motion.div
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group rounded-xl border border-border/80 bg-card p-5 h-full transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 cursor-default"
+                >
+                  <div className="mb-3.5 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110 shadow-xs">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h4 className="text-sm font-bold text-foreground mb-1.5 group-hover:text-primary transition-colors">
+                    {item.title}
+                  </h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
+                </motion.div>
+              </MotionStaggerItem>
+            );
+          })}
+        </MotionStagger>
+      </div>
+    </Section>
   );
 }

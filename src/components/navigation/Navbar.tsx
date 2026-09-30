@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { FileText, Linkedin, Github, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/Container";
 import { NAV_ITEMS, SECTION_IDS } from "@/lib/constants";
 import { profileData } from "@/data/profile";
@@ -59,6 +60,7 @@ export function Navbar() {
 
   return (
     <>
+      {/* Scroll Progress Bar */}
       <div
         id="scroll-progress"
         style={{ transform: `scaleX(${scrollProgress / 100})` }}
@@ -67,22 +69,35 @@ export function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
-            ? "bg-background/90 backdrop-blur-md border-b border-border py-3.5"
-            : "bg-transparent py-5 sm:py-6"
+            ? "bg-background/80 backdrop-blur-md border-b border-border/80 shadow-sm py-2.5"
+            : "bg-transparent py-4"
         }`}
       >
         <Container>
           <div className="flex items-center justify-between">
-            {/* Minimal Brand Name */}
+            {/* Logo / Brand Name with subtle glow badge */}
             <Link
               href="/#hero"
-              className="text-base font-semibold tracking-tight text-foreground hover:opacity-75 transition-opacity"
+              className="group flex items-center gap-2.5 focus-visible:outline-none"
             >
-              {profileData.name}
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-500 text-primary-foreground shadow-sm shadow-primary/30 transition-transform duration-300 group-hover:scale-105">
+                <span className="font-extrabold text-sm tracking-wider">
+                  {profileData.name.charAt(0)}
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-bold tracking-tight text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
+                  {profileData.name}
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                </span>
+                <span className="text-[11px] font-medium text-muted-foreground hidden sm:inline-block">
+                  {profileData.positioning.title}
+                </span>
+              </div>
             </Link>
 
-            {/* Editorial Nav Links */}
-            <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-muted-foreground">
+            {/* Desktop Navigation Links */}
+            <nav className="hidden lg:flex items-center gap-1 rounded-full border border-border/80 bg-card/70 backdrop-blur-md px-3 py-1 text-xs font-medium text-muted-foreground shadow-xs">
               {NAV_ITEMS.map((item) => {
                 const targetId = item.href.replace("/#", "").replace("#", "");
                 const isActive = activeSection === targetId;
@@ -91,32 +106,69 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`transition-colors duration-150 ${
+                    className={`relative px-3 py-1.5 rounded-full transition-all duration-200 ${
                       isActive
-                        ? "text-foreground font-semibold"
-                        : "hover:text-foreground"
+                        ? "text-primary font-semibold shadow-xs"
+                        : "hover:text-foreground hover:bg-accent/60"
                     }`}
                   >
+                    {isActive && (
+                      <span className="absolute inset-0 rounded-full bg-primary/10 border border-primary/20 -z-10 animate-fade-in" />
+                    )}
                     {item.label}
                   </Link>
                 );
               })}
             </nav>
 
-            {/* Right: Resume & Theme */}
-            <div className="flex items-center gap-3">
-              <a
-                href={profileData.resume}
-                download
-                onClick={() => track("resume_download", { source: "navbar" })}
-                className="hidden sm:inline-flex items-center gap-1 text-xs font-medium text-foreground hover:text-primary transition-colors border border-border rounded-full px-3.5 py-1.5 hover:border-primary/50"
-              >
-                <span>Resume</span>
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
+            {/* Right Action Icons & Resume */}
+            <div className="flex items-center gap-2">
+              {profileData.linkedin ? (
+                <a
+                  href={profileData.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  onClick={() =>
+                    track("external_profile_click", { platform: "linkedin" })
+                  }
+                  className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200 hover:scale-105"
+                >
+                  <Linkedin className="h-4 w-4" />
+                </a>
+              ) : null}
+
+              {profileData.github ? (
+                <a
+                  href={profileData.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  onClick={() =>
+                    track("external_profile_click", { platform: "github" })
+                  }
+                  className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200 hover:scale-105"
+                >
+                  <Github className="h-4 w-4" />
+                </a>
+              ) : null}
 
               <ThemeToggle />
 
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="hidden sm:inline-flex gap-1.5 rounded-full text-xs font-medium border-border hover:border-primary/50 shadow-xs hover:shadow-primary/20 transition-all duration-200 hover:scale-102"
+                onClick={() => track("resume_download", { source: "navbar" })}
+              >
+                <a href={profileData.resume} download>
+                  <FileText className="h-3.5 w-3.5 text-primary" />
+                  <span>Resume</span>
+                </a>
+              </Button>
+
+              {/* Mobile Nav trigger */}
               <MobileNav activeSection={activeSection} />
             </div>
           </div>
