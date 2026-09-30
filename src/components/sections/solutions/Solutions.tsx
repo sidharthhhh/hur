@@ -4,16 +4,16 @@ import { SectionHeading } from "@/components/layout/SectionHeading";
 import { profileData } from "@/data/profile";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AnimatedContainer } from "@/components/motion/AnimatedContainer";
-import { CheckCircle, Sparkles } from "lucide-react";
+import { CheckCircle2, Sparkles, ArrowRight } from "lucide-react";
 
 export function Solutions() {
   const { solutions } = profileData;
 
   return (
-    <Section id="solutions" className="border-t border-border/60">
+    <Section id="solutions" className="border-t border-border/60 bg-card/20">
       <AnimatedContainer>
         <SectionHeading
-          eyebrow="Value Creation"
+          eyebrow="Solutions & Value Creation"
           title={solutions.heading}
           description={solutions.intro}
         />
@@ -21,19 +21,19 @@ export function Solutions() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {solutions.areas.map((area, idx) => (
-          <AnimatedContainer key={area} delay={0.06 * idx}>
-            <Card className="h-full hover:border-primary/40 hover:-translate-y-1 transition-all duration-200">
-              <CardHeader className="p-5 pb-2 flex-row items-center gap-3 space-y-0">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
-                  <CheckCircle className="h-4 w-4" />
+          <AnimatedContainer key={area} delay={0.05 * idx}>
+            <Card className="h-full hover:border-primary/50 hover:-translate-y-1.5 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 relative overflow-hidden group">
+              <CardHeader className="p-6 pb-2 flex-row items-center gap-3 space-y-0">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground">
+                  <CheckCircle2 className="h-4 w-4" />
                 </div>
-                <CardTitle className="text-base font-semibold text-foreground">
+                <CardTitle className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
                   {area}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-5 pt-2">
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Applying analytical workflows, automation logic, and systems thinking to eliminate process friction and deliver structured visibility.
+              <CardContent className="p-6 pt-2">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Applying structured project planning, data models, and analytical tools to streamline operational workflows and eliminate bottlenecks.
                 </p>
               </CardContent>
             </Card>

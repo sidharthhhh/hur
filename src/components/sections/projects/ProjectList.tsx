@@ -6,7 +6,7 @@ import { ProjectItem, ProjectCategory } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Github, ExternalLink, BookOpen, Layers } from "lucide-react";
+import { Github, ExternalLink, BookOpen, Layers, Code2 } from "lucide-react";
 import { track } from "@/lib/analytics";
 
 interface ProjectListProps {
@@ -17,10 +17,10 @@ type FilterCategory = "all" | ProjectCategory;
 
 const filterOptions: { label: string; value: FilterCategory }[] = [
   { label: "All Projects", value: "all" },
+  { label: "Web Applications", value: "technology" },
   { label: "Data Analytics", value: "analytics" },
   { label: "Business & Ops", value: "business" },
   { label: "Data Science (Future)", value: "data-science" },
-  { label: "Technology", value: "technology" },
 ];
 
 export function ProjectList({ projects }: ProjectListProps) {
@@ -36,7 +36,6 @@ export function ProjectList({ projects }: ProjectListProps) {
       {/* Filter Tabs */}
       <div className="flex flex-wrap items-center gap-2 pb-2">
         {filterOptions.map((opt) => {
-          // Hide empty categories
           const count =
             opt.value === "all"
               ? projects.length
@@ -49,16 +48,18 @@ export function ProjectList({ projects }: ProjectListProps) {
             <button
               key={opt.value}
               onClick={() => setSelectedCategory(opt.value)}
-              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 ${
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200 cursor-pointer ${
                 isSelected
-                  ? "bg-primary text-primary-foreground shadow-xs"
-                  : "bg-secondary/60 text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/20 scale-102"
+                  : "bg-card/70 border border-border/80 text-muted-foreground hover:bg-accent hover:text-foreground hover:border-primary/40"
               }`}
             >
               <span>{opt.label}</span>
               <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                  isSelected ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
+                className={`text-[10px] px-2 py-0.5 rounded-full font-mono ${
+                  isSelected
+                    ? "bg-primary-foreground/20 text-primary-foreground font-bold"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
                 {count}
@@ -73,13 +74,25 @@ export function ProjectList({ projects }: ProjectListProps) {
         {filteredProjects.map((project) => (
           <Card
             key={project.id}
-            className="flex flex-col justify-between hover:-translate-y-1 hover:border-primary/40 hover:shadow-sm transition-all duration-200"
+            className="flex flex-col justify-between hover:-translate-y-1.5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 relative overflow-hidden group bg-card/80 backdrop-blur-xs"
           >
+            {/* Top gradient line accent on card */}
+            <div
+              className={`absolute top-0 left-0 right-0 h-1 transition-opacity duration-300 ${
+                project.category === "technology"
+                  ? "bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500"
+                  : project.category === "analytics"
+                  ? "bg-gradient-to-r from-emerald-400 via-teal-500 to-blue-500"
+                  : "bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500"
+              }`}
+            />
+
             <div>
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 pt-6">
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                    {project.category.replace("-", " ")}
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1">
+                    <Code2 className="h-3 w-3 text-primary" />
+                    <span>{project.category.replace("-", " ")}</span>
                   </span>
                   <Badge
                     variant={
@@ -89,7 +102,7 @@ export function ProjectList({ projects }: ProjectListProps) {
                         ? "default"
                         : "secondary"
                     }
-                    className="text-[10px] py-0 font-medium"
+                    className="text-[10px] py-0 font-semibold"
                   >
                     {project.status === "completed"
                       ? "Completed"
@@ -99,7 +112,7 @@ export function ProjectList({ projects }: ProjectListProps) {
                   </Badge>
                 </div>
 
-                <CardTitle className="text-base sm:text-lg line-clamp-2">
+                <CardTitle className="text-base sm:text-lg font-bold line-clamp-2 text-foreground group-hover:text-primary transition-colors">
                   {project.title}
                 </CardTitle>
               </CardHeader>
@@ -113,8 +126,8 @@ export function ProjectList({ projects }: ProjectListProps) {
 
                 {/* Structured 1-line Problem & Solution */}
                 {project.problem && (
-                  <div className="text-xs space-y-1 rounded-md bg-secondary/30 p-2.5">
-                    <p className="text-muted-foreground">
+                  <div className="text-xs space-y-1.5 rounded-lg bg-secondary/40 border border-border/50 p-3">
+                    <p className="text-muted-foreground leading-relaxed">
                       <strong className="text-foreground">Problem:</strong> {project.problem}
                     </p>
                   </div>
@@ -126,7 +139,7 @@ export function ProjectList({ projects }: ProjectListProps) {
                     <Badge
                       key={tech}
                       variant="outline"
-                      className="text-[11px] font-normal text-muted-foreground"
+                      className="text-[11px] font-normal text-muted-foreground bg-card/50"
                     >
                       {tech}
                     </Badge>
@@ -135,10 +148,10 @@ export function ProjectList({ projects }: ProjectListProps) {
               </CardContent>
             </div>
 
-            <CardFooter className="pt-3 border-t border-border/60 flex items-center justify-between gap-2">
+            <CardFooter className="pt-3 pb-5 border-t border-border/60 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 {project.hasCaseStudy && (
-                  <Button asChild size="sm" variant="default" className="text-xs gap-1.5 h-8">
+                  <Button asChild size="sm" variant="default" className="text-xs gap-1.5 h-8 shadow-xs hover:shadow-primary/20">
                     <Link
                       href={`/case-studies/${project.slug}`}
                       onClick={() =>
@@ -174,7 +187,7 @@ export function ProjectList({ projects }: ProjectListProps) {
                 )}
 
                 {project.github && (
-                  <Button asChild size="sm" variant="ghost" className="h-8 w-8 p-0">
+                  <Button asChild size="sm" variant="ghost" className="h-8 w-8 p-0 hover:text-foreground">
                     <a
                       href={project.github}
                       target="_blank"
